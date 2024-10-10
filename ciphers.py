@@ -34,7 +34,7 @@ def message_cleaner(msg):
         if l in ALPHABET:
             temp += l
     return temp
-def console_menu(cipher, key_generate):
+def console_menu(cipher, key_generate): 
     key = input("Podaj Klucz: ")
     if key == "":
         key = key_generate()
