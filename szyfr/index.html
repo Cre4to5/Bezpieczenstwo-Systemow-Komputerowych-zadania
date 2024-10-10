@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Szyfr</title>
+    <style type="text/css">
+        *{
+            background-color: #222;
+            color: aliceblue;
+        }
+        .flex{
+            display: flex;
+            justify-content: space-evenly;
+            min-height: 500px;
+        }
+        .container{
+            display: flex;
+            flex-direction: column;
+        }
+        input{
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="flex">
+        <div class="container">
+            <div class="form_element">
+                <input type="text" id="cipher_input" placeholder="Tajna Wiadomość">
+            </div>
+            <div class="form_element">
+                <input type="range" min="0" max="33" value="3" class="slider" id="caesar_cipher">
+                <label for="caesar_cipher" class="slider_label" id="caesar_cipher_label"></label>
+            </div>
+            <div class="form_element">
+                <input type="button" onclick="cipher()" id="cipher" value="Szyfruj">
+            </div>
+            <div class="form_element">
+                <input type="text" id="cipher_output" placeholder="Zaszyfrowana Wiadomość">
+            </div>
+        </div>
+        <div class="container">
+            <div class="form_element">
+                <input type="text" id="decipher_input" placeholder="Zaszyfrowana Wiadomość">
+            </div>
+            <div class="form_element">
+                <input type="range" min="0" max="33" value="3" class="slider" id="caesar_decipher">
+                <label for="caesar_decipher" class="slider_label" id="caesar_decipher_label"></label>
+            </div>
+            <div class="form_element">
+                <input type="button" onclick="decipher()" id="decipher" value="Rozszyfruj">
+            </div>
+            <div class="form_element">
+                <input type="text" id="decipher_output" placeholder="Rozszyfrowana Wiadomość">
+            </div>
+        </div>
+    </div>
+    <script id="caesar_cipher">
+        const numbers = "0123456789"
+        const alphabet = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyźż"
+        const ALPHABET = alphabet.toUpperCase()
+
+        function shift(toBeShifted, n){
+            var cipherdMsg = ""
+            toBeShifted.forEach(x=>{
+                const nIndex = numbers.indexOf(x)
+                const aIndex = alphabet.indexOf(x)
+                const AIndex = ALPHABET.indexOf(x)
+                if(nIndex != -1){
+                    cipherdMsg += numbers[Math.abs((nIndex + n) % numbers.length)]
+                }else if(aIndex != -1){
+                    cipherdMsg += alphabet[Math.abs((aIndex + n) % alphabet.length)]
+                }else if(AIndex != -1){
+                    cipherdMsg += ALPHABET[Math.abs((AIndex + n) % ALPHABET.length)]
+                }else{
+                    cipherdMsg += x
+                }
+            })
+            return cipherdMsg
+        }
+
+        function cipher(){
+            var secertMsg = document.querySelector("#cipher_input").value.split("")
+            // console.log(secertMsg)
+            var cipherdMsg = shift(secertMsg,parseInt(document.querySelector("#caesar_cipher_label").innerHTML))
+            // console.log(cipherdMsg)
+            document.querySelector("#cipher_output").value = cipherdMsg
+        }
+
+        function decipher(){
+            var cipherdMsg = document.querySelector("#decipher_input").value.split("")
+            // console.log(cipherdMsg)
+            var decipheredMsg = shift(cipherdMsg,parseInt(`-${document.querySelector("#caesar_decipher_label").innerHTML}`))
+            document.querySelector("#decipher_output").value = decipheredMsg
+        }
+    </script>
+    <script id="slider">
+        var sliders = document.querySelectorAll(".slider")
+        var outputs = document.querySelectorAll(".slider_label")
+        outputs.forEach(x => {
+            // console.log(x.id.slice(0,-6))
+            x.innerHTML = document.querySelector(`#${x.id.slice(0,-6)}`).value
+        }) // Display the default slider value
+
+        // Update the current slider value (each time you drag the slider handle)
+        sliders.forEach(x =>{
+            x.oninput = function() {
+                document.querySelector(`#${x.id}_label`).innerHTML = this.value;
+            }
+        })
+    </script>
+</body>
+</html>
