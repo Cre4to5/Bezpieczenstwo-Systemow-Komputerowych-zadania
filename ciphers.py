@@ -3,9 +3,16 @@ import random
 import math
 ALPHABET = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż"
 def shift(to_be_shifted, n):
-    pass#TODO
+    processedMsg = ""
+    for l in to_be_shifted:
+        INDEX = ALPHABET.index(l)
+        if INDEX != -1:
+            processedMsg += ALPHABET[abs((INDEX + n) % len(ALPHABET))]
+    return processedMsg
 def caesar_cipher(to_process, key, mode):
-    pass#TODO
+    if mode:
+        key = -key
+    return shift(to_process, key)
 def caesar_key():
     return random.randint(0, 33)
 
