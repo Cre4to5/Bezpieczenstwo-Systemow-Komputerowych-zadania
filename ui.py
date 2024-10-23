@@ -1,6 +1,6 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QPushButton, QSlider, QVBoxLayout, QHBoxLayout, QTextEdit, QLabel
-from ciphers import message_cleaner, caesar_cipher, caesar_key, polybius_square_cipher, polybius_key
+from ciphers import messageCleaner, caesarCipher, caesarKey, polybiusCipher, polybiusKey
 
 class CipherWidget(QWidget):
     _type = ""
@@ -8,18 +8,20 @@ class CipherWidget(QWidget):
         super().__init__()
         widget_layout = QVBoxLayout()
         self._type = type
+        txtInput = QTextEdit()
+        txtOutput = QTextEdit()
+        txtInput.setTabChangesFocus(True)
+        txtOutput.setTabChangesFocus(True)
+        txtOutput.setReadOnly(True)
         if self._type.split("_")[1] == "cipher":
-            txtInput = QTextEdit()
             txtInput.setPlaceholderText("Cipher Input")
             button = QPushButton("Cipher")
-            txtOutput = QTextEdit()
             txtOutput.setPlaceholderText("Cipher Output")
         else:
-            txtInput = QTextEdit()
             txtInput.setPlaceholderText("Decipher Input")
             button = QPushButton("Decipher")
-            txtOutput = QTextEdit()
             txtOutput.setPlaceholderText("Decipher Output")
+
 
         button.clicked.connect(self.btn_click)
         widget_layout.addWidget(txtInput)
