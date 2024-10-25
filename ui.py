@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QPushButton, QSlider, QVBoxLayout, QHBoxLayout, QTextEdit, QLabel
+from PySide6.QtWidgets import QWidget, QPushButton, QSlider, QVBoxLayout, QHBoxLayout, QTextEdit, QLabel, QLineEdit
 from ciphers import messageCleaner, caesarCipher, caesarKey, polybiusCipher, polybiusKey
 
 class CipherWidget(QWidget):
@@ -23,17 +23,17 @@ class CipherWidget(QWidget):
             txtOutput.setPlaceholderText("Decipher Output")
 
 
-        button.clicked.connect(self.btn_click)
+        button.clicked.connect(self.btnClick)
         widget_layout.addWidget(txtInput)
-        match self._type.split("_")[0]:
-            case "caesar":
-                sliderWrapper = SliderWrapper(self._type.split("_")[1])
-                widget_layout.addWidget(sliderWrapper)
+        if self._type.split("_")[0] == "caesar":
+            sliderWrapper = SliderWrapper(self._type.split("_")[1])
+            widget_layout.addWidget(sliderWrapper)
+        else:
         
         widget_layout.addWidget(button)
         widget_layout.addWidget(txtOutput)
         self.setLayout(widget_layout)
-    def btn_click(self):
+    def btnClick(self):
         print(f"You Clicked the {self._type} button")
 class SliderWrapper(QWidget):
     _type = ""
@@ -48,18 +48,35 @@ class SliderWrapper(QWidget):
         self._slider.setMinimum(0)
         self._slider.setMaximum(33)
         self._slider.setValue(3)
-        self._slider.valueChanged.connect(self.respond_to_slider)
+        self._slider.valueChanged.connect(self.respondToSlider)
 
         self._label = QLabel()
         self._label.setText("3")
         
+        genButton = QPushButton("\N{GAME DIE}")
+        genButton.setFixedSize(25,25)
+        genButton.clicked.connect(self.generate)
+
         widget_layout.addWidget(self._slider)
         widget_layout.addWidget(self._label)
+        widget_layout.addWidget(genButton)
         self.setLayout(widget_layout)
-    def respond_to_slider(self):
+    def respondToSlider(self):
         self._label.setText(str(self._slider.value()))
         print(self._slider.value())
-        
+    def generate(self):
+        print("generete")
+class KeyInWrapper(QWidget):
+    _type = ""
+    _editLine = None
+    def __init__(self, type):
+        super().__init__()
+        self._type = type
+        widget_layout = QHBoxLayout()
+        self._editLine = QLineEdit()
+        self._editLine.textChanged.connect(self.keyChanged)
+    def keyChanged():
+        pass
 class CipherWrapper(QWidget):
     def __init__(self, type):
         super().__init__()
