@@ -29,7 +29,7 @@ class CipherWidget(QWidget):
             sliderWrapper = SliderWrapper(self._type.split("_")[1])
             widget_layout.addWidget(sliderWrapper)
         else:
-        
+            pass#TODO
         widget_layout.addWidget(button)
         widget_layout.addWidget(txtOutput)
         self.setLayout(widget_layout)
@@ -68,15 +68,28 @@ class SliderWrapper(QWidget):
         print("generete")
 class KeyInWrapper(QWidget):
     _type = ""
+    _keyGenerate = None
+    _isKey = None
     _editLine = None
-    def __init__(self, type):
+    def __init__(self, type: str, keyGenerate: function, isKey: function):
         super().__init__()
         self._type = type
+        self._keyGenerate = keyGenerate
+        self._isKey = isKey
         widget_layout = QHBoxLayout()
+
         self._editLine = QLineEdit()
         self._editLine.textChanged.connect(self.keyChanged)
-    def keyChanged():
-        pass
+
+        genButton = QPushButton("\N{GAME DIE}")
+        genButton.setFixedSize(25,25)#its own class???
+        genButton.clicked.connect(self.generate)
+    def keyChanged(self):
+        self._isKey(self._editLine.text())
+        pass#TODO
+    def generate(self):
+        self._keyGenerate()
+        print("generete")#TODO
 class CipherWrapper(QWidget):
     def __init__(self, type):
         super().__init__()
