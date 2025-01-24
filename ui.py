@@ -71,7 +71,7 @@ class KeyInWrapper(QWidget):
     _keyGenerate = None
     _isKey = None
     _editLine = None
-    def __init__(self, type: str, keyGenerate: function, isKey: function):
+    def __init__(self, type: str, keyGenerate, isKey):
         super().__init__()
         self._type = type
         self._keyGenerate = keyGenerate
