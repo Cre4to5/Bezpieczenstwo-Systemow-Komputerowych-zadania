@@ -171,7 +171,7 @@ class CipherApp(QWidget):
         selected_cipher = self.cipher_selector.currentText()
         cipher_func, _, is_key_valid = self.cipher_functions[selected_cipher]
 
-        input_message = input_widget.toPlainText()  # Get raw input message
+        input_message = input_widget.toPlainText()  # Do not clean input for deciphering
         key = self.get_key(mode)
 
         if not is_key_valid(key):
@@ -181,13 +181,14 @@ class CipherApp(QWidget):
         is_deciphering = (mode == "Decipher")
 
         try:
-            # Use messageCleaner only for ciphering (not deciphering)
+            # Apply messageCleaner only for ciphering
             if not is_deciphering:
                 input_message = messageCleaner(input_message)
 
-            # Pass raw input for deciphering to match console behavior
             output_message = cipher_func(input_message, key, is_deciphering)
             output_widget.setPlainText(output_message)
+        except ValueError as ve:
+            output_widget.setPlainText(f"Input format error: {ve}")
         except Exception as e:
             output_widget.setPlainText(f"Error: {str(e)}")
 
